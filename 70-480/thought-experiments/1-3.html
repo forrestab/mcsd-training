@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+    <head>
+        <title></title>
+    </head>
+
+    <body>
+
+        <h1>1.3 Thought Experiment</h1>
+        <ol>
+            <li>Create a dynamic survey where the questions are shown based on the previous answer.</li>
+        </ol>
+
+        <header>
+            A dynamic questionnaire.
+        </header>
+
+        <section>
+            <article>
+                <hgroup>
+                    <h1>Questionnaire</h1>
+                    <h2>Answer the questions in order as they appear.</h2>
+                </hgroup>
+
+                <div id="q1" onclick="reveal(this, event)">
+                    1. Do you like short surveys?
+                    <label><input type="radio" name="q1-results" value="q2">Yes</label>
+                    <label><input type="radio" name="q1-results" value="q3">No</label>
+                </div>
+                <div id="q2" onclick="reveal(this, event)">
+                    2. Do you like same length surveys?
+                    <label><input type="radio" name="q2-results" value="q4">Yes</label>
+                    <label><input type="radio" name="q2-results" value="q5">No</label>
+                </div>
+                <div id="q3" onclick="reveal(this, event)">
+                    3. Do you like answers that provide no information?
+                    <label><input type="radio" name="q3-results" value="q6">Yes</label>
+                    <label><input type="radio" name="q3-results" value="q6">No</label>
+                </div>
+                <div id="q4" onclick="reveal(this, event)">
+                    4. Choose one.
+                    <label><input type="radio" name="q4-results" value="q10">Yes</label>
+                    <label><input type="radio" name="q4-results" value="q10">No</label>
+                </div>
+                <div id="q5" onclick="reveal(this, event)">
+                    5. Choose the other one.
+                    <label><input type="radio" name="q5-results" value="q10">Yes</label>
+                    <label><input type="radio" name="q5-results" value="q10">No</label>
+                </div>
+                <div id="q6" onclick="reveal(this, event)">
+                    6. Do you like answers that no longer shorten the surveys?
+                    <label><input type="radio" name="q6-results" value="q7">Yes</label>
+                    <label><input type="radio" name="q6-results" value="q8">No</label>
+                </div>
+                <div id="q7" onclick="reveal(this, event)">
+                    7. Choose one.
+                    <label><input type="radio" name="q7-results" value="q9">Yes</label>
+                    <label><input type="radio" name="q7-results" value="q9">No</label>
+                </div>
+                <div id="q8" onclick="reveal(this, event)">
+                    8. Choose the opposite of what you are thinking.
+                    <label><input type="radio" name="q8-results" value="q9">Yes</label>
+                    <label><input type="radio" name="q8-results" value="q9">No</label>
+                </div>
+                <div id="q9" onclick="reveal(this, event)">
+                    9. Are you almost finished?
+                    <label><input type="radio" name="q9-results" value="q10">Yes</label>
+                    <label><input type="radio" name="q9-results" value="q10">No</label>
+                </div>
+                <div id="q10" onclick="reveal(this, event)">
+                    10. Do you think this is the end?
+                    <label><input type="radio" name="q10-results" value="finish">Yes</label>
+                    <label><input type="radio" name="q10-results" value="finish">No</label>
+                </div>
+                <div id="finish">
+                    <p>You did it!</p>
+                </div>
+            </article>
+        </section>
+
+        <script>
+            function clearChecks(answers) {
+                for(var i = 0; i < answers.length; i++) {
+                    answers[i].checked = false;
+                }
+            }
+
+            function reset(question) {
+                var questions = document.getElementsByTagName("div");
+                var questionFound = false;
+
+                for(var i = 0; i < questions.length; i++) {
+                    if(questionFound) {
+                        questions[i].style.visibility = "hidden";
+                        clearChecks(questions[i].getElementsByTagName("input"));
+                    }
+
+                    if(questions[i].getAttribute("id") === question) {
+                        questionFound = true;
+                    }
+                }
+            }
+
+            function reveal(source, e) {
+                var answer = e.target;
+                var targetQuestion = document.getElementById(answer.value);
+
+                reset(source.id);
+                targetQuestion.style.visibility = "visible";
+            }
+
+            window.onload = function() {
+                reset("q1");
+            };
+        </script>
+
+    </body>
+</html>

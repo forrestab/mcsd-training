@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <title></title>
+
+        <style>
+            .ball-pit {
+                background-color: #e6e6e6;
+                height: 400px;
+                margin-top: 100px;
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h1>1.2 Thought Experiment</h1>
+        <ol>
+            <li>Make a ball that moves from left to right.</li>
+            <li>When the ball is clicked, it should split into 2 balls.</li>
+        </ol>
+
+        <svg class="ball-pit" id="ball-pit">
+            <circle id="ball" cx="25" cy="25" r="20" fill="red" onclick="split(event)" />
+        </svg>
+
+        <script>
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+            function getRandomCoordinate(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+
+            function cloneBall(ball, ballPit) {
+                var ballClone = ball.cloneNode(true);
+
+                ballClone.setAttribute("cx", getRandomCoordinate(0, ballPit.offsetWidth));
+                ballClone.setAttribute("cy", getRandomCoordinate(0, ballPit.offsetHeight));
+                ballClone.removeAttribute("transform");
+
+                return ballClone;
+            }
+
+            function split(e) {
+                var ballPit = document.getElementById("ball-pit");
+                var maxBalls = 10;
+
+                if(ballPit.children.length < maxBalls) {
+                    ballPit.appendChild(cloneBall(e.target, ballPit));
+                } else {
+                    alert("You have hit the maximum number of circles (" + maxBalls + ").");
+                }
+            }
+
+            function moveBall(ball, destinationX, destinationY, timeout) {
+                setTimeout(function() {
+                    ball.setAttribute("transform", "translate(" + destinationX + "," + destinationY + ")");
+                }, timeout);
+            }
+
+            window.onload = function() {
+                var ball = document.getElementById("ball");
+                var destinationX = document.getElementById("ball-pit").offsetWidth - (ball.getAttribute("r") * 2);
+
+                moveBall(ball, destinationX, 0, 1000);
+            };
+        </script>
+
+    </body>
+</html>
