@@ -10,6 +10,14 @@
         </style>
     </head>
     <body>
+
+        <!--
+            Example in the book that spanned pages.
+
+            Note: The example in the book used replaceNode (IE only) and innerText (IE and Chrome),
+                so I made some changes to get it working for all recent browser versions.
+        -->
+
         <section>
             Key: <input type="text" id="toStorageKey">
             Value: <input type="text" id="toStorageValue">
@@ -25,22 +33,26 @@
 
         <script>
             window.onload = function() {
+                // You can swap the storages here to see the differences
+                var storage = localStorage;
+                //var storage = sessionStorage;
+
                 setBrowser();
                 loadFromStorage();
 
                 document.getElementById("btnAdd").onclick = function() {
-                    localStorage.setItem(document.getElementById("toStorageKey").value,
+                    storage.setItem(document.getElementById("toStorageKey").value,
                         document.getElementById("toStorageValue").value);
                         loadFromStorage();
                 };
 
                 document.getElementById("btnRemove").onclick = function() {
-                    localStorage.removeItem(document.getElementById("toStorageKey").value);
+                    storage.removeItem(document.getElementById("toStorageKey").value);
                     loadFromStorage();
                 };
 
                 document.getElementById("btnClear").onclick = function() {
-                    localStorage.clear();
+                    storage.clear();
                     loadFromStorage();
                 };
 
@@ -49,16 +61,14 @@
                     var table = document.createElement("table");
 
                     table.id = "storageTable";
-                    if(localStorage.length > 0) {
+                    if(storage.length > 0) {
                         for(var i = 0; i < localStorage.length; i++) {
                             var row = document.createElement("tr");
                             var key = document.createElement("td");
                             var value = document.createElement("td");
 
-                            //key.innerText = localStorage.key(i);
-                            key = setElementText(key, localStorage.key(i));
-                            //value.innerText = localStorage.getItem(key.innerText);
-                            value = setElementText(value, localStorage.getItem(!isFirefox() ? key.innerText : key.textContent));
+                            key = setElementText(key, storage.key(i));
+                            value = setElementText(value, storage.getItem(!isFirefox() ? key.innerText : key.textContent));
                             row.appendChild(key);
                             row.appendChild(value);
                             table.appendChild(row);
@@ -67,14 +77,12 @@
                         var row = document.createElement("tr");
                         var column = document.createElement("td");
 
-                        //column.innerText = "No data in local storage.";
                         column = setElementText(column, "No data in local storage.");
                         row.appendChild(column);
                         table.appendChild(row);
                     }
 
                     if(document.getElementById("storageTable")) {
-                        //document.getElementById("storageTable").replaceNode(table);
                         replace(document.getElementById("storageTable"), table);
                     } else {
                         storageDiv.appendChild(table);

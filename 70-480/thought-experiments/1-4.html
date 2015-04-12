@@ -4,8 +4,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
+        <title>1.4 Route Recorder - MCSD Training</title>
 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <style>
             html,
             body,
@@ -25,73 +26,40 @@
             }
 
             .btn-group {
-                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-                display: inline-block;
-                float: right;
-                position: relative;
-                vertical-align: middle;
-            }
-
-            .btn-group > .btn {
-                float: left;
-                position: relative;
-            }
-
-            .btn-group > .btn:first-child {
-                border-left: none;
-                margin-left: 0;
+                background-color: #fff;
             }
 
             .btn {
-                background-image: none;
-                border: none;
-                border-left: 1px solid transparent;
-                cursor: pointer;
-                display: inline-block;
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 1.42857143;
-                margin-bottom: 0;
-                padding: 6px 12px;
-                text-align: center;
-                vertical-align: middle;
-                white-space: nowrap;
-            }
-
-            .btn:active {
-                box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
-                color: #333;
+                border-radius: 0;
                 outline: 0;
             }
 
-            .btn:hover,
             .btn:focus {
-                color: #333;
                 outline: 0;
             }
 
-            .btn-default {
-                background-color: #fff;
-                border-left-color: rgba(0,0,0,0.125);
-                color: #333;
-            }
-
-            .btn-default:active,
-            .btn-default:hover {
-                background-color: #e6e6e6;
-                border-left-color: #adadad;
-                color: #333;
+            .md-level-1 {
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
             }
         </style>
     </head>
 
     <body>
 
+        <!--
+            1. Create a running or walking utility that measures distance traveled
+            2. Has a feature to replay the completed routes
+        -->
+
         <div id="map-canvas"></div>
         <div class="display-panel">
-            <div class="btn-group">
-                <button type="button" id="toggle-route" class="btn btn-default">Start Route</button>
-                <button type="button" id="replay-route" class="btn btn-default">Replay</button>
+            <div class="btn-group md-level-1">
+                <button type="button" id="toggle-route" class="btn btn-default">
+                    <span class="glyphicon glyphicon-record"></span>
+                </button>
+                <button type="button" id="replay-route" class="btn btn-default">
+                    <span class="glyphicon glyphicon-play"></span>
+                </button>
             </div>
         </div>
 
@@ -130,12 +98,12 @@
                         timeout: 10000, // 10 seconds
                         maximumAge: 0
                     });
-                    this.innerText = "Stop Route";
+                    this.children[0].className = "glyphicon glyphicon-stop";
                     document.getElementById("replay-route").disabled = true;
                 } else {
                     window.navigator.geolocation.clearWatch(pollId);
                     pollId = null;
-                    this.innerText = "Start Route";
+                    this.children[0].className = "glyphicon glyphicon-record";
                     document.getElementById("replay-route").disabled = false;
                 }
             }
