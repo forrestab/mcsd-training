@@ -69,39 +69,54 @@
         <div id="chip" draggable="true" class="chip begin"></div>
 
         <script>
+            var key = "chip-id";
+
             window.onload = function() {
+                setupChip();
+                setupBuckets();
+            };
+
+            function setupChip() {
                 var chip = document.getElementById("chip");
 
                 chip.addEventListener("dragstart", function() {
-                    window.event.dataTransfer.setData("Text", this.id);
+                    window.event.dataTransfer.setData(key, this.id);
                 });
+            }
 
-                var bucket1 = document.getElementById("bucket1");
+            function setupBuckets() {
+                var buckets = document.getElementsByClassName("bucket");
 
-                bucket1.addEventListener("dragenter", function() {
-                    bucket1.classList.add("over");
-                    window.event.returnValue = false; // cancelling native event
-                });
+                for(var i = 0; i < buckets.length; i++) {
+                    buckets[i].addEventListener("dragenter", dragEnterEventHandler);
+                    buckets[i].addEventListener("dragleave", dragLeaveEventHandler);
+                    buckets[i].addEventListener("dragover", dragOverEventHandler);
+                    buckets[i].addEventListener("drop", dropEventHandler);
+                }
+            }
 
-                bucket1.addEventListener("dragleave", function() {
-                    bucket1.classList.remove("over");
-                });
+            function dragEnterEventHandler() {
+                this.classList.add("over");
+                window.event.returnValue = false; // cancelling native event
+            }
 
-                bucket1.addEventListener("dragover", function() {
-                    window.event.returnValue = false; // cancelling native event
-                });
+            function dragLeaveEventHandler() {
+                this.classList.remove("over");
+            }
 
-                bucket1.addEventListener("drop", function() {
-                    window.event.returnValue = false; // cancelling native event
+            function dragOverEventHandler() {
+                window.event.returnValue = false; // cancelling native event
+            }
 
-                    var data = event.dataTransfer.getData("Text");
-                    var element = document.getElementById(data);
+            function dropEventHandler() {
+                var chip = document.getElementById(event.dataTransfer.getData(key));
 
-                    element.classList.remove("begin");
-                    element.classList.add("dropped");
-                    this.appendChild(element);
-                });
-            };
+                chip.classList.remove("begin");
+                chip.classList.add("dropped");
+                this.appendChild(chip);
+
+                window.event.returnValue = false; // cancelling native event
+            }
         </script>
     </body>
 </html>
