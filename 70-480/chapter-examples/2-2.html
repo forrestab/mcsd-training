@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2.2 Drag & Drop - MCSD Training</title>
+
+        <style>
+            .dropped {
+                background-color: black;
+                height: 50%;
+                left: 25%;
+                position: relative;
+                top: 25%;
+                width: 50%;
+            }
+
+            .over {
+                transform: scale(1.1);
+            }
+
+            .bucket {
+                height: 100px;
+                margin: 10px;
+                position: absolute;
+                width: 100px;
+            }
+
+            .chip {
+                height: 20px;
+                position: absolute;
+                width: 20px;
+            }
+
+            div:first-of-type {
+                background-color: red;
+            }
+
+            div:nth-of-type(2) {
+                background-color: green;
+                left: 25%;
+            }
+
+            div:nth-of-type(3) {
+                background-color: blue;
+                left: 50%;
+            }
+
+            #chip {
+                background-color: black;
+                height: 50px;
+                width: 50px;
+            }
+
+            .begin {
+                left: 150px;
+                position: absolute;
+                top: 150px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!--
+            Example in the book that spanned pages.
+        -->
+
+        <div id="bucket1" class="bucket"></div>
+        <div id="bucket2" class="bucket"></div>
+        <div id="bucket3" class="bucket"></div>
+        <div id="chip" draggable="true" class="chip begin"></div>
+
+        <script>
+            window.onload = function() {
+                var chip = document.getElementById("chip");
+
+                chip.addEventListener("dragstart", function() {
+                    window.event.dataTransfer.setData("Text", this.id);
+                });
+
+                var bucket1 = document.getElementById("bucket1");
+
+                bucket1.addEventListener("dragenter", function() {
+                    bucket1.classList.add("over");
+                    window.event.returnValue = false; // cancelling native event
+                });
+
+                bucket1.addEventListener("dragleave", function() {
+                    bucket1.classList.remove("over");
+                });
+
+                bucket1.addEventListener("dragover", function() {
+                    window.event.returnValue = false; // cancelling native event
+                });
+
+                bucket1.addEventListener("drop", function() {
+                    window.event.returnValue = false; // cancelling native event
+
+                    var data = event.dataTransfer.getData("Text");
+                    var element = document.getElementById(data);
+
+                    element.classList.remove("begin");
+                    element.classList.add("dropped");
+                    this.appendChild(element);
+                });
+            };
+        </script>
+    </body>
+</html>
